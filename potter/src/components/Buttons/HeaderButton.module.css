@@ -1,0 +1,14 @@
+.header_button {
+  border-color: gold;
+  background-color: black;
+  color: gold;
+  height: 30px;
+  padding: 5px;
+}
+
+.link {
+  border-color: gold;
+  background-color: black;
+  color: gold;
+  text-decoration: none;
+}
