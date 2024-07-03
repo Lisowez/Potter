@@ -7,7 +7,6 @@ import { Link } from "react-router-dom"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
-  const [allCharacters, setAllCharacters] = useState<Character[]>([])
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([])
 
   useEffect(() => {
@@ -17,7 +16,6 @@ export const Header = () => {
           "https://hp-api.onrender.com/api/characters",
         )
         const data: Character[] = await response.json()
-        setAllCharacters(data)
         setFilteredCharacters(data)
       } catch (error) {
         throw new Error(`${error}`)
@@ -25,13 +23,6 @@ export const Header = () => {
     }
     responseData()
   }, [])
-
-  useEffect(() => {
-    const filteredCharacters = allCharacters.filter(character =>
-      character.name.toLowerCase().startsWith(searchText.toLowerCase()),
-    )
-    setFilteredCharacters(filteredCharacters)
-  }, [searchText, allCharacters])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)

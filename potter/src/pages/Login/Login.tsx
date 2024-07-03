@@ -1,9 +1,7 @@
-import { SubmitHandler } from "react-hook-form"
-import { RegistrationData } from "../../ulits/interface/Registration"
-import { Form } from "../../components/Forms/Form"
+import { Credentials, Form } from "../../components/Forms/Form"
 
 export const Login = () => {
-  const onSubmit: SubmitHandler<RegistrationData> = data => {
+  const onSubmit = (data: Credentials) => {
     console.log(data)
   }
 

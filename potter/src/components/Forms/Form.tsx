@@ -1,14 +1,18 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import { RegistrationData } from "../../ulits/interface/Registration"
+
 import style from "./Form.module.css"
 
+export interface Credentials {
+  email: string
+  password: string
+}
 interface FormPropsInterface {
-  onSubmit: SubmitHandler<RegistrationData>
+  onSubmit: SubmitHandler<Credentials>
   type: string
 }
 
 export const Form = ({ onSubmit, type }: FormPropsInterface) => {
-  const { register, handleSubmit } = useForm<RegistrationData>()
+  const { register, handleSubmit } = useForm<Credentials>()
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`${style[`form`]}`}>
