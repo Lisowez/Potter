@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom"
-import { Registration } from "../components/Registration/Registration"
-import { Login } from "../components/Login/Login"
-import Error from "../components/Error/Error"
-import Main from "../components/Main/Main"
+import { Registration } from "../pages/Registration/Registration"
+import { Login } from "../pages/Login/Login"
+import Error from "../pages/Error/Error"
+import Main from "../pages/Main/Main"
+import { Home } from "../pages/Home/Home"
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +11,7 @@ export const router = createBrowserRouter([
     element: <Main />,
     errorElement: <Error />,
     children: [
+      { path: "/", element: <Home /> },
       {
         path: "/registration",
         element: <Registration />,

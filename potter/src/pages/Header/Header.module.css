@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  margin: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search_div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search_input {
+  height: 20px;
+  border-color: gold;
+  background-color: black;
+  color: gold;
+}
+
+.search_button {
+  width: 50px;
+  height: 23px;
+  border-color: gold;
+  background-color: black;
+  color: gold;
+}
+
+.buttons_header {
+  display: flex;
+  gap: 20px;
+}
+
+.search_input::placeholder {
+  color: gold;
+}
