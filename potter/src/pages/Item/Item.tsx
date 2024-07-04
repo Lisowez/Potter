@@ -31,6 +31,9 @@ const Item = () => {
         flexDirection: "column",
         gap: "20px",
         fontSize: "30px",
+        width: "30%",
+        border: "5px solid gold",
+        padding: "20px",
       }}
     >
       <img

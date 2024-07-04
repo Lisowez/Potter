@@ -24,7 +24,7 @@ export const Header = () => {
 
   function handleClickSuggest(id: string) {
     return () => {
-      navigate(`/${id}`)
+      navigate(`/hero/${id}`)
       setSearchText("")
     }
   }

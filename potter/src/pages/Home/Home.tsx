@@ -7,8 +7,7 @@ import { HeroCard } from "../../components/HeroCard/HeroCard"
 
 export const Home = () => {
   const { characters } = useContext(CharacterContext) as CharacterContextType
-  characters.length = 12
-
+  const charactersHome = characters.slice(0, 12)
   return (
     <div
       className="home"
@@ -19,7 +18,7 @@ export const Home = () => {
         justifyContent: "center",
       }}
     >
-      {characters.map(x => {
+      {charactersHome.map(x => {
         return (
           <HeroCard
             id={x.id}

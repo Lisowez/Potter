@@ -1,4 +1,5 @@
 import style from "./HeroCard.module.css"
+import { useNavigate } from "react-router-dom"
 
 interface heroCardInterface {
   id: string
@@ -8,8 +9,16 @@ interface heroCardInterface {
 }
 
 export const HeroCard = (props: heroCardInterface) => {
+  const navigate = useNavigate()
+  function onClickCard(id: string) {
+    return () => {
+      navigate(`/hero/${id}`)
+    }
+  }
+
   return (
     <div
+      onClick={onClickCard(props.id)}
       className={style.hero_card}
       id={props.id}
       style={{ color: "gold", padding: "10px", border: "2px solid gold" }}
