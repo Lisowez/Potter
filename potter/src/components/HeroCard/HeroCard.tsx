@@ -1,24 +1,19 @@
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 
-interface heroCardInterface {
+interface HeroCardInterface {
   id: string
   image: string
   name: string
   house: string
 }
 
-export const HeroCard = (props: heroCardInterface) => {
+export const HeroCard = (props: HeroCardInterface) => {
   const navigate = useNavigate()
-  function onClickCard(id: string) {
-    return () => {
-      navigate(`/hero/${id}`)
-    }
-  }
 
   return (
     <div
-      onClick={onClickCard(props.id)}
+      onClick={() => navigate(`/hero/${props.id}`)}
       className={style.hero_card}
       id={props.id}
       style={{ color: "gold", padding: "10px", border: "2px solid gold" }}

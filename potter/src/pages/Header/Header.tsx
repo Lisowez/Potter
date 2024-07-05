@@ -8,20 +8,12 @@ import {
   CharacterContext,
   CharacterContextType,
 } from "../../ulits/context/CharacterContext"
+import { useUserLogin } from "./useUserLogin"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
   const { characters } = useContext(CharacterContext) as CharacterContextType
-  const [isLogined, setIsLogined] = useState<boolean>()
-
-  let userActive = localStorage.getItem("userActive")
-  window.addEventListener("storage", () => {
-    userActive = localStorage.getItem("userActive")
-  })
-  useEffect(() => {
-    const userActive = localStorage.getItem("userActive")
-    Boolean(userActive) ? setIsLogined(true) : setIsLogined(false)
-  }, [userActive])
+  const { isLogined, handleLogout } = useUserLogin()
 
   const navigate = useNavigate()
 
@@ -39,9 +31,9 @@ export const Header = () => {
       setSearchText("")
     }
   }
+
   function onClickLogout() {
-    localStorage.removeItem("userActive")
-    setIsLogined(false)
+    handleLogout()
     navigate("/")
   }
 
