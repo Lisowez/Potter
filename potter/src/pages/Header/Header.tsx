@@ -1,7 +1,7 @@
 import logo from "./logo.svg"
 import style from "./Header.module.css"
 import { HeaderButton } from "../../components/Buttons/HeaderButton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useContext } from "react"
 import {
@@ -12,6 +12,17 @@ import {
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
   const { characters } = useContext(CharacterContext) as CharacterContextType
+  const [isLogined, setIsLogined] = useState<boolean>()
+
+  let userActive = localStorage.getItem("userActive")
+  window.addEventListener("storage", () => {
+    userActive = localStorage.getItem("userActive")
+  })
+  useEffect(() => {
+    const userActive = localStorage.getItem("userActive")
+    Boolean(userActive) ? setIsLogined(true) : setIsLogined(false)
+  }, [userActive])
+
   const navigate = useNavigate()
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -27,6 +38,11 @@ export const Header = () => {
       navigate(`/hero/${id}`)
       setSearchText("")
     }
+  }
+  function onClickLogout() {
+    localStorage.removeItem("userActive")
+    setIsLogined(false)
+    navigate("/")
   }
 
   return (
@@ -66,8 +82,20 @@ export const Header = () => {
         </button>
       </div>
       <div className={style.buttons_header}>
-        <HeaderButton type="registration" />
-        <HeaderButton type="login" />
+        {isLogined ? (
+          <>
+            <HeaderButton type="history" />
+            <HeaderButton type="favorite" />
+            <button className={style.btn} onClick={onClickLogout}>
+              logout
+            </button>
+          </>
+        ) : (
+          <>
+            <HeaderButton type="registration" />
+            <HeaderButton type="login" />
+          </>
+        )}
       </div>
     </header>
   )

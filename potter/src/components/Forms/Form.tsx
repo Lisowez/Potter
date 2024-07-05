@@ -9,9 +9,10 @@ export interface Credentials {
 interface FormPropsInterface {
   onSubmit: SubmitHandler<Credentials>
   type: string
+  error: string
 }
 
-export const Form = ({ onSubmit, type }: FormPropsInterface) => {
+export const Form = ({ onSubmit, type, error }: FormPropsInterface) => {
   const {
     register,
     handleSubmit,
@@ -49,6 +50,7 @@ export const Form = ({ onSubmit, type }: FormPropsInterface) => {
         )}
       </div>
       <button className={style.form_button}>{type}</button>
+      <div style={{ color: "red", fontSize: "10px" }}>{error}</div>
     </form>
   )
 }
