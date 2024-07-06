@@ -4,6 +4,7 @@ import { Login } from "../pages/Login/Login"
 import Error from "../pages/Error/Error"
 import Main from "../pages/Main/Main"
 import { Home } from "../pages/Home/Home"
+import Item from "../pages/Item/Item"
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "hero/:id",
+        element: <Item />,
       },
     ],
   },

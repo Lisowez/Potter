@@ -1,35 +1,40 @@
 import logo from "./logo.svg"
 import style from "./Header.module.css"
 import { HeaderButton } from "../../components/Buttons/HeaderButton"
-import { useState, useEffect } from "react"
-import { Character } from "../../ulits/interface/Character"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import {
+  CharacterContext,
+  CharacterContextType,
+} from "../../ulits/context/CharacterContext"
+import { useUserLogin } from "./useUserLogin"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
-  const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([])
+  const { characters } = useContext(CharacterContext) as CharacterContextType
+  const { isLogined, handleLogout } = useUserLogin()
 
-  useEffect(() => {
-    const responseData = async () => {
-      try {
-        const response = await fetch(
-          "https://hp-api.onrender.com/api/characters",
-        )
-        const data: Character[] = await response.json()
-        setFilteredCharacters(data)
-      } catch (error) {
-        throw new Error(`${error}`)
-      }
-    }
-    responseData()
-  }, [])
+  const navigate = useNavigate()
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)
   }
 
   function startSearch() {
-    console.log(filteredCharacters) // действие при нажатии на кнопку поиска
+    // console.log(filteredCharacters) // действие при нажатии на кнопку поиска
+  }
+
+  function handleClickSuggest(id: string) {
+    return () => {
+      navigate(`/hero/${id}`)
+      setSearchText("")
+    }
+  }
+
+  function onClickLogout() {
+    handleLogout()
+    navigate("/")
   }
 
   return (
@@ -47,13 +52,42 @@ export const Header = () => {
           value={searchText}
           placeholder="search..."
         />
+        {searchText.length > 0 && (
+          <div className={style.suggestions}>
+            {characters
+              .filter(x =>
+                x.name.toLowerCase().includes(searchText.toLowerCase()),
+              )
+              .map(x => (
+                <div
+                  key={x.id}
+                  className={style.suggestion}
+                  onClick={handleClickSuggest(x.id)}
+                >
+                  {x.name}
+                </div>
+              ))}
+          </div>
+        )}
         <button onClick={startSearch} className={style.search_button}>
           Search
         </button>
       </div>
       <div className={style.buttons_header}>
-        <HeaderButton type="registration" />
-        <HeaderButton type="login" />
+        {isLogined ? (
+          <>
+            <HeaderButton type="history" />
+            <HeaderButton type="favorite" />
+            <button className={style.btn} onClick={onClickLogout}>
+              logout
+            </button>
+          </>
+        ) : (
+          <>
+            <HeaderButton type="registration" />
+            <HeaderButton type="login" />
+          </>
+        )}
       </div>
     </header>
   )

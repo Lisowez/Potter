@@ -1,0 +1,12 @@
+.hero_card {
+  transform: scale(1);
+  transition: 1.5s;
+  transition: box-shadow 0.7s ease-in-out;
+}
+
+.hero_card:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: 1s;
+  box-shadow: 5px 5px 100px gold;
+}

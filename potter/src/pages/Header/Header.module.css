@@ -34,3 +34,32 @@
 .search_input::placeholder {
   color: gold;
 }
+
+.suggestions {
+  position: absolute;
+  top: 100px;
+  background-color: gold;
+  border: 1px solid black;
+  padding: 8px 0;
+  z-index: 1;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.suggestion {
+  padding: 4px 16px;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background-color: black;
+  color: gold;
+}
+
+.btn {
+  border-color: gold;
+  background-color: black;
+  color: gold;
+  height: 30px;
+  padding: 5px;
+}
