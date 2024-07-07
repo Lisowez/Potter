@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { checkUserActive } from "../../App/userSlice"
+import { RootState } from "../../App/store"
 
 interface allUserInfo {
   user: Credentials
@@ -9,13 +12,17 @@ interface allUserInfo {
 }
 
 export const Registration = () => {
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [error, setError] = useState("")
 
   useEffect(() => {
-    const userActive = localStorage.getItem("userActive") // заменить на проверку redax
-    if (userActive) navigate("/")
-  }, [])
+    dispatch(checkUserActive())
+    if (status) {
+      navigate("/")
+    }
+  }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
     const UsersJSON = localStorage.getItem("users")
@@ -30,6 +37,7 @@ export const Registration = () => {
       users.push(userInfo)
       localStorage.setItem("users", JSON.stringify(users))
       localStorage.setItem("userActive", JSON.stringify(userInfo))
+      dispatch(checkUserActive())
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
       setTimeout(() => {

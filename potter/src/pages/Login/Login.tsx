@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { checkUserActive } from "../../App/userSlice"
+import { RootState } from "../../App/store"
 
 interface allUserInfo {
   user: Credentials
@@ -11,11 +14,15 @@ interface allUserInfo {
 export const Login = () => {
   const navigate = useNavigate()
   const [error, setError] = useState("")
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const userActive = localStorage.getItem("userActive") // заменить на проверку redax
-    if (userActive) navigate("/")
-  }, [])
+    dispatch(checkUserActive())
+    if (status) {
+      navigate("/")
+    }
+  }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
     const UsersJSON = localStorage.getItem("users")
@@ -42,9 +49,7 @@ export const Login = () => {
     ) {
       const userActive = users.filter(x => x.user.email === data.email)[0]
       localStorage.setItem("userActive", JSON.stringify(userActive))
-    }
-    if (localStorage.getItem("userActive")) {
-      navigate("/")
+      dispatch(checkUserActive())
     }
   }
 

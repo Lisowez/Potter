@@ -8,14 +8,20 @@ import {
   CharacterContext,
   CharacterContextType,
 } from "../../ulits/context/CharacterContext"
-import { useUserLogin } from "./useUserLogin"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../App/store"
+import { checkUserActive } from "../../App/userSlice"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
   const { characters } = useContext(CharacterContext) as CharacterContextType
-  const { isLogined, handleLogout } = useUserLogin()
-
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(checkUserActive())
+  }, [dispatch, status, navigate])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)
@@ -33,7 +39,8 @@ export const Header = () => {
   }
 
   function onClickLogout() {
-    handleLogout()
+    localStorage.removeItem("userActive")
+    dispatch(checkUserActive())
     navigate("/")
   }
 
@@ -74,7 +81,7 @@ export const Header = () => {
         </button>
       </div>
       <div className={style.buttons_header}>
-        {isLogined ? (
+        {status ? (
           <>
             <HeaderButton type="history" />
             <HeaderButton type="favorite" />

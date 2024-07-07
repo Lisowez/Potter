@@ -1,7 +1,7 @@
 import "./App.css"
 import { RouterProvider } from "react-router-dom"
 import { router } from "./ulits/router"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { Character } from "./ulits/interface/Character"
 import { CharacterContext } from "./ulits/context/CharacterContext"
 
@@ -22,8 +22,13 @@ const App = () => {
     }
     responseData()
   }, [])
+
+  const characterContextValue = useMemo(() => {
+    return { characters }
+  }, [characters])
+
   return (
-    <CharacterContext.Provider value={{ characters}}>
+    <CharacterContext.Provider value={characterContextValue}>
       <div className="App">
         <RouterProvider router={router}></RouterProvider>
       </div>
