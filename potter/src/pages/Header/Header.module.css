@@ -62,4 +62,11 @@
   color: gold;
   height: 30px;
   padding: 5px;
+  transition: 0.5s;
+}
+
+.btn:hover {
+  background-color: gold;
+  color: black;
+  transition: 0.5s;
 }

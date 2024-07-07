@@ -4,10 +4,13 @@
   color: gold;
   height: 30px;
   padding: 5px;
+  transition: 0.5s;
 }
 
 .link {
   border-color: gold;
+  width: 100%;
+  height: 100%;
   background-color: black;
   color: gold;
   text-decoration: none;

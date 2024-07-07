@@ -1,11 +1,8 @@
 import { useContext } from "react"
-import {
-  CharacterContext,
-  CharacterContextType,
-} from "../../ulits/context/CharacterContext"
+import { CharacterContext } from "../../ulits/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
 
-export const Home = () => {
+const Home = () => {
   const context = useContext(CharacterContext)
   if (context) {
     const { characters } = context
@@ -35,3 +32,5 @@ export const Home = () => {
     )
   }
 }
+
+export default Home
