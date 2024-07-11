@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 
+//уже не используем
+
 export const useUserLogin = () => {
   const [isLogined, setIsLogined] = useState<boolean>(false)
   let userActive = localStorage.getItem("userActive")

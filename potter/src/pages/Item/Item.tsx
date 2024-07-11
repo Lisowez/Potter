@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Character } from "../../ulits/interface/Character"
 import style from "./Item.module.css"
@@ -23,6 +23,10 @@ const Item = () => {
     fetchItemData()
   }, [id])
 
+  const itemDataMemo = useMemo(() => {
+    return itemData
+  }, [itemData])
+
   return (
     <div
       className="item"
@@ -38,13 +42,15 @@ const Item = () => {
     >
       <img
         className={style.item_img}
-        src={itemData?.image}
-        alt={itemData?.name}
+        src={itemDataMemo?.image}
+        alt={itemDataMemo?.name}
       />
-      <p className={style.item_year}>Year of birth: {itemData?.yearOfBirth}</p>
-      <p className={style.item_name}>Name: {itemData?.name}</p>
-      <p className={style.item_house}>Faculty: {itemData?.house}</p>
-      <p className={style.item_actor}>Actor: {itemData?.actor}</p>
+      <p className={style.item_year}>
+        Year of birth: {itemDataMemo?.yearOfBirth}
+      </p>
+      <p className={style.item_name}>Name: {itemDataMemo?.name}</p>
+      <p className={style.item_house}>Faculty: {itemDataMemo?.house}</p>
+      <p className={style.item_actor}>Actor: {itemDataMemo?.actor}</p>
     </div>
   )
 }

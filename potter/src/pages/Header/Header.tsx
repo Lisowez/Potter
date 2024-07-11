@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../App/store"
 import { checkUserActive } from "../../App/userSlice"
+import { removeUser } from "../../ulits/LS/forWorkWithUser"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
@@ -18,6 +19,7 @@ export const Header = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isVisibleSuggest, setisVisibleSuggest] = useState(true)
 
   useEffect(() => {
     dispatch(checkUserActive())
@@ -39,13 +41,21 @@ export const Header = () => {
   }
 
   function onClickLogout() {
-    localStorage.removeItem("userActive")
+    removeUser()
     dispatch(checkUserActive())
     navigate("/")
   }
 
   return (
-    <header className={style.header}>
+    <header
+      className={style.header}
+      onClick={e =>
+        (e.target as HTMLElement).classList.contains(style.suggestion) ||
+        (e.target as HTMLElement).classList.contains(style.search_input)
+          ? setisVisibleSuggest(true)
+          : setisVisibleSuggest(false)
+      }
+    >
       <Link to="/">
         {" "}
         <img src={logo} alt="logo" />
@@ -59,7 +69,7 @@ export const Header = () => {
           value={searchText}
           placeholder="search..."
         />
-        {searchText.length > 0 && (
+        {searchText.length > 0 && isVisibleSuggest && (
           <div className={style.suggestions}>
             {characters
               .filter(x =>

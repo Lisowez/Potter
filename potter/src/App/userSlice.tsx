@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { getUserActive } from "../ulits/LS/forWorkWithUser"
 
 interface UserState {
   isLoggedIn: boolean
@@ -13,7 +14,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     checkUserActive: state => {
-      const userActive = localStorage.getItem("userActive")
+      const userActive = getUserActive()
       state.isLoggedIn = !!userActive
     },
   },

@@ -4,12 +4,15 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { checkUserActive } from "../../App/userSlice"
 import { RootState } from "../../App/store"
+import {
+  allUserInfo,
+  getAllUser,
+  getUserActive,
+  setAllUsers,
+  setUserActive,
+} from "../../ulits/LS/forWorkWithUser"
 
-interface allUserInfo {
-  user: Credentials
-  history: string[]
-  favorites: string[]
-}
+
 
 export const Registration = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
@@ -25,8 +28,7 @@ export const Registration = () => {
   }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
-    const UsersJSON = localStorage.getItem("users")
-    let users: allUserInfo[] = UsersJSON ? JSON.parse(UsersJSON) : []
+    let users: allUserInfo[] = getAllUser()
 
     if (users.filter(x => x.user.email === data.email).length === 0) {
       const userInfo: allUserInfo = {
@@ -35,8 +37,8 @@ export const Registration = () => {
         favorites: [],
       }
       users.push(userInfo)
-      localStorage.setItem("users", JSON.stringify(users))
-      localStorage.setItem("userActive", JSON.stringify(userInfo))
+      setAllUsers(users)
+      setUserActive(userInfo)
       dispatch(checkUserActive())
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
@@ -44,7 +46,7 @@ export const Registration = () => {
         setError("")
       }, 2000)
     }
-    if (localStorage.getItem("userActive")) {
+    if (getUserActive()) {
       navigate("/")
     }
   }

@@ -4,12 +4,9 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { checkUserActive } from "../../App/userSlice"
 import { RootState } from "../../App/store"
+import { allUserInfo, getAllUser, setUserActive } from "../../ulits/LS/forWorkWithUser"
 
-interface allUserInfo {
-  user: Credentials
-  history: string[]
-  favorites: string[]
-}
+
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -25,8 +22,7 @@ export const Login = () => {
   }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
-    const UsersJSON = localStorage.getItem("users")
-    let users: allUserInfo[] = UsersJSON ? JSON.parse(UsersJSON) : []
+    let users: allUserInfo[] = getAllUser()
 
     if (users.filter(x => x.user.email === data.email).length === 0) {
       setError("This email address is not registered")
@@ -48,7 +44,7 @@ export const Login = () => {
       ).length > 0
     ) {
       const userActive = users.filter(x => x.user.email === data.email)[0]
-      localStorage.setItem("userActive", JSON.stringify(userActive))
+      setUserActive(userActive)
       dispatch(checkUserActive())
     }
   }
