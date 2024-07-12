@@ -26,7 +26,22 @@ export const Favorite = () => {
     )
     setFavoriteCharacter(filteredCharacters)
   }, [favorites, dispatch])
-
+  if (favoriteCharacters.length === 0) {
+    return (
+      <div
+        className="favorite"
+        style={{
+          flexDirection: "row",
+          gap: "5%",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          color: "gold",
+        }}
+      >
+        favorites list is empty
+      </div>
+    )
+  }
   return (
     <div
       className="favorite"
