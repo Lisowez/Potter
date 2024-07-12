@@ -2,14 +2,11 @@ import { useSelector, useDispatch } from "react-redux"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 import { RootState } from "../../App/store/store"
-import { useEffect, useState } from "react"
+import { addFavorite, removeFavorite } from "../../utils/LS/forWorkWithUser"
 import {
-  addFavorite,
-  allUserInfo,
-  getUserActive,
-  removeFavorite,
-} from "../../utils/LS/forWorkWithUser"
-import favoritesSlice, { checkFavorite } from "../../App/store/favoritesSlice"
+  addToFavorites,
+  removeFromFavorites,
+} from "../../App/store/favoritesSlice"
 
 interface HeroCardInterface {
   id: string
@@ -31,8 +28,13 @@ export const HeroCard = (props: HeroCardInterface) => {
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    isFavorite ? removeFavorite(props.id) : addFavorite(props.id)
-    dispatch(checkFavorite())
+    if (isFavorite) {
+      removeFavorite(props.id)
+      dispatch(removeFromFavorites(props.id))
+    } else {
+      addFavorite(props.id)
+      dispatch(addToFavorites(props.id))
+    }
   }
 
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {

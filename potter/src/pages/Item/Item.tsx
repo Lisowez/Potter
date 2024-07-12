@@ -3,7 +3,10 @@ import { useParams } from "react-router-dom"
 import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
-import { checkFavorite } from "../../App/store/favoritesSlice"
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../../App/store/favoritesSlice"
 import { removeFavorite, addFavorite } from "../../utils/LS/forWorkWithUser"
 import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
@@ -30,8 +33,13 @@ const Item = () => {
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    isFavorite ? removeFavorite(id!) : addFavorite(id!)
-    dispatch(checkFavorite())
+    if (isFavorite) {
+      removeFavorite(id!)
+      dispatch(removeFromFavorites(id!))
+    } else {
+      addFavorite(id!)
+      dispatch(addToFavorites(id!))
+    }
   }
 
   return (

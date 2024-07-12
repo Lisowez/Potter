@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { allUserInfo, getUserActive } from "../../utils/LS/forWorkWithUser"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface FavoritesState {
   favorites: string[]
@@ -9,19 +8,22 @@ const initialState: FavoritesState = {
   favorites: [],
 }
 
-const favoriteSlice = createSlice({
+const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
   reducers: {
-    checkFavorite: state => {
-      const userActive = getUserActive()
-      if (userActive) {
-        const user: allUserInfo = JSON.parse(userActive)
-        state.favorites = user.favorites
-      }
+    addToFavorites: (state, action: PayloadAction<string>) => {
+      state.favorites.push(action.payload)
+    },
+    removeFromFavorites: (state, action: PayloadAction<string>) => {
+      state.favorites = state.favorites.filter(id => id !== action.payload)
+    },
+    setFavorites: (state, action: PayloadAction<string[]>) => {
+      state.favorites = action.payload
     },
   },
 })
 
-export const { checkFavorite } = favoriteSlice.actions
-export default favoriteSlice.reducer
+export const { addToFavorites, removeFromFavorites, setFavorites } =
+  favoritesSlice.actions
+export default favoritesSlice.reducer
