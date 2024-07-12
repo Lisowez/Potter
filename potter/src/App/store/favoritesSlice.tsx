@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { allUserInfo, getUserActive } from "../ulits/LS/forWorkWithUser"
+import { allUserInfo, getUserActive } from "../../utils/LS/forWorkWithUser"
 
 interface FavoritesState {
   favorites: string[]

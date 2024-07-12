@@ -1,31 +1,23 @@
 import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Character } from "../../ulits/interface/Character"
+import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
-import { checkFavorite } from "../../App/favoritesSlice"
-import { removeFavorite, addFavorite } from "../../ulits/LS/forWorkWithUser"
-import { RootState } from "../../App/store"
+import { checkFavorite } from "../../App/store/favoritesSlice"
+import { removeFavorite, addFavorite } from "../../utils/LS/forWorkWithUser"
+import { RootState } from "../../App/store/store"
+import { useGetCharacterByIDQuery } from "../../App/store/api/api"
 
 const Item = () => {
   const { id } = useParams()
-
+  const { data } = useGetCharacterByIDQuery(id!)
   const [itemData, setItemData] = useState<Character | null>(null)
 
   useEffect(() => {
-    const fetchItemData = async () => {
-      try {
-        const response = await fetch(
-          `https://hp-api.onrender.com/api/character/${id}`,
-        )
-        const data: Character[] = await response.json()
-        setItemData(data[0])
-      } catch (error) {
-        throw new Error(`error:${error}`)
-      }
+    if (data) {
+      setItemData(data[0])
     }
-    fetchItemData()
-  }, [id])
+  }, [data])
 
   const dispatch = useDispatch()
   const favorites = useSelector(

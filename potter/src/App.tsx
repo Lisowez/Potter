@@ -1,31 +1,23 @@
 import "./App.css"
 import { RouterProvider } from "react-router-dom"
-import { router } from "./ulits/router"
+import { router } from "./utils/router"
 import { useEffect, useState, useMemo } from "react"
-import { Character } from "./ulits/interface/Character"
-import { CharacterContext } from "./ulits/context/CharacterContext"
+import { Character } from "./utils/interface/Character"
+import { CharacterContext } from "./utils/context/CharacterContext"
 import { Suspense } from "react"
 import { Loading } from "./pages/Loading/Loading"
 import { withErrorBoundary } from "react-error-boundary"
 import ErrorPage from "./pages/Error/Error"
+import { useGetCharactersQuery } from "./App/store/api/api"
 
 const App = () => {
   const [characters, setCharacters] = useState<Character[]>([])
-
+  const { data } = useGetCharactersQuery()
   useEffect(() => {
-    const responseData = async () => {
-      try {
-        const response = await fetch(
-          "https://hp-api.onrender.com/api/characters",
-        )
-        const data: Character[] = await response.json()
-        setCharacters(data)
-      } catch (error) {
-        throw new Error(`${error}`)
-      }
+    if (data) {
+      setCharacters(data)
     }
-    responseData()
-  }, [])
+  }, [data])
 
   const characterContextValue = useMemo(() => {
     return { characters }

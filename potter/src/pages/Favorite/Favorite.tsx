@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from "react-redux"
-import { RootState } from "../../App/store"
+import { RootState } from "../../App/store/store"
 import { useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import {
   CharacterContext,
   CharacterContextType,
-} from "../../ulits/context/CharacterContext"
+} from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
 
 export const Favorite = () => {

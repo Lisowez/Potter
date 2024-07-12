@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { CharacterContext } from "../../ulits/context/CharacterContext"
+import { CharacterContext } from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
 
 const Home = () => {

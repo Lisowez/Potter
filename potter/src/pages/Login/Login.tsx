@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkUserActive } from "../../App/userSlice"
-import { RootState } from "../../App/store"
-import { allUserInfo, getAllUser, setUserActive } from "../../ulits/LS/forWorkWithUser"
-
-
+import { checkUserActive } from "../../App/store/userSlice"
+import { RootState } from "../../App/store/store"
+import {
+  allUserInfo,
+  getAllUser,
+  setUserActive,
+} from "../../utils/LS/forWorkWithUser"
 
 export const Login = () => {
   const navigate = useNavigate()

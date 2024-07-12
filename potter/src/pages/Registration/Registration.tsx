@@ -2,17 +2,15 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkUserActive } from "../../App/userSlice"
-import { RootState } from "../../App/store"
+import { checkUserActive } from "../../App/store/userSlice"
+import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
   getAllUser,
   getUserActive,
   setAllUsers,
   setUserActive,
-} from "../../ulits/LS/forWorkWithUser"
-
-
+} from "../../utils/LS/forWorkWithUser"
 
 export const Registration = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)

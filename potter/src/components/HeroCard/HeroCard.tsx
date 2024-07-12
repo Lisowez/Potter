@@ -1,15 +1,15 @@
 import { useSelector, useDispatch } from "react-redux"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
-import { RootState } from "../../App/store"
+import { RootState } from "../../App/store/store"
 import { useEffect, useState } from "react"
 import {
   addFavorite,
   allUserInfo,
   getUserActive,
   removeFavorite,
-} from "../../ulits/LS/forWorkWithUser"
-import favoritesSlice, { checkFavorite } from "../../App/favoritesSlice"
+} from "../../utils/LS/forWorkWithUser"
+import favoritesSlice, { checkFavorite } from "../../App/store/favoritesSlice"
 
 interface HeroCardInterface {
   id: string

@@ -7,11 +7,11 @@ import { useContext } from "react"
 import {
   CharacterContext,
   CharacterContextType,
-} from "../../ulits/context/CharacterContext"
+} from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../App/store"
-import { checkUserActive } from "../../App/userSlice"
-import { removeUser } from "../../ulits/LS/forWorkWithUser"
+import { RootState } from "../../App/store/store"
+import { checkUserActive } from "../../App/store/userSlice"
+import { removeUser } from "../../utils/LS/forWorkWithUser"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")

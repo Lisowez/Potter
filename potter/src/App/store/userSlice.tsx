@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getUserActive } from "../ulits/LS/forWorkWithUser"
+import { getUserActive } from "../../utils/LS/forWorkWithUser"
 
 interface UserState {
   isLoggedIn: boolean
