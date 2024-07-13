@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkUserActive } from "../../App/store/userSlice"
+import { checkFavorite, checkUserActive } from "../../App/store/userSlice"
 import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
@@ -38,6 +38,7 @@ export const Registration = () => {
       setAllUsers(users)
       setUserActive(userInfo)
       dispatch(checkUserActive())
+      dispatch(checkFavorite())
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
       setTimeout(() => {

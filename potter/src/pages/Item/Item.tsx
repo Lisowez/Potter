@@ -3,13 +3,10 @@ import { useParams } from "react-router-dom"
 import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  addToFavorites,
-  removeFromFavorites,
-} from "../../App/store/favoritesSlice"
 import { removeFavorite, addFavorite } from "../../utils/LS/forWorkWithUser"
 import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
+import { checkFavorite, loadUserData } from "../../App/store/userSlice"
 
 const Item = () => {
   const { id } = useParams()
@@ -18,27 +15,27 @@ const Item = () => {
 
   useEffect(() => {
     if (data) {
+      dispatch(loadUserData())
       setItemData(data[0])
     }
   }, [data])
 
   const dispatch = useDispatch()
-  const favorites = useSelector(
-    (state: RootState) => state.favoritesSlice.favorites,
-  )
 
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
 
-  const isFavorite: boolean = favorites.includes(id!)
+  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+
+  const isFavorite = favorites.includes(id!)
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     if (isFavorite) {
       removeFavorite(id!)
-      dispatch(removeFromFavorites(id!))
+      dispatch(checkFavorite())
     } else {
       addFavorite(id!)
-      dispatch(addToFavorites(id!))
+      dispatch(checkFavorite())
     }
   }
 

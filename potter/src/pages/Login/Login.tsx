@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkUserActive } from "../../App/store/userSlice"
+import { checkFavorite, checkUserActive } from "../../App/store/userSlice"
 import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
@@ -48,6 +48,7 @@ export const Login = () => {
       const userActive = users.filter(x => x.user.email === data.email)[0]
       setUserActive(userActive)
       dispatch(checkUserActive())
+      dispatch(checkFavorite())
     }
   }
 

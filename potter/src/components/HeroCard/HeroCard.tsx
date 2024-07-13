@@ -3,10 +3,8 @@ import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 import { RootState } from "../../App/store/store"
 import { addFavorite, removeFavorite } from "../../utils/LS/forWorkWithUser"
-import {
-  addToFavorites,
-  removeFromFavorites,
-} from "../../App/store/favoritesSlice"
+import { checkFavorite, loadUserData } from "../../App/store/userSlice"
+import { useEffect } from "react"
 
 interface HeroCardInterface {
   id: string
@@ -18,22 +16,19 @@ interface HeroCardInterface {
 export const HeroCard = (props: HeroCardInterface) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const favorites = useSelector(
-    (state: RootState) => state.favoritesSlice.favorites,
-  )
-
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
 
-  const isFavorite: boolean = favorites.includes(props.id)
+  const isFavorite = favorites.includes(props.id)
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     if (isFavorite) {
       removeFavorite(props.id)
-      dispatch(removeFromFavorites(props.id))
+      dispatch(checkFavorite())
     } else {
       addFavorite(props.id)
-      dispatch(addToFavorites(props.id))
+      dispatch(checkFavorite())
     }
   }
 
@@ -42,6 +37,10 @@ export const HeroCard = (props: HeroCardInterface) => {
       navigate(`/hero/${props.id}`)
     }
   }
+
+  useEffect(() => {
+    dispatch(loadUserData())
+  }, [])
 
   return (
     <div

@@ -10,7 +10,11 @@ import {
 } from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../App/store/store"
-import { checkUserActive } from "../../App/store/userSlice"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
 import { removeUser } from "../../utils/LS/forWorkWithUser"
 
 export const Header = () => {
@@ -43,6 +47,7 @@ export const Header = () => {
   function onClickLogout() {
     removeUser()
     dispatch(checkUserActive())
+    dispatch(checkFavorite())
     navigate("/")
   }
 
