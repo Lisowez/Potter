@@ -37,7 +37,7 @@ export const Favorite = () => {
           color: "gold",
         }}
       >
-        favorites list is empty
+        Favorites list is empty
       </div>
     )
   }

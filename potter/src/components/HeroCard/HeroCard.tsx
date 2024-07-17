@@ -9,7 +9,7 @@ import {
   removeFavorite,
 } from "../../utils/LS/forWorkWithUser"
 import { checkFavorite, loadUserData } from "../../App/store/userSlice"
-import { useEffect } from "react"
+import { Fragment, useEffect } from "react"
 
 interface HeroCardInterface {
   id: string
@@ -53,7 +53,6 @@ export const HeroCard = (props: HeroCardInterface) => {
       dispatch(loadUserData({ user: userData }))
     }
   }, [favorites.length])
-
   return (
     <div
       onClick={handleCardClick}
@@ -61,11 +60,15 @@ export const HeroCard = (props: HeroCardInterface) => {
       id={props.id}
       style={{ color: "gold", padding: "10px", border: "2px solid gold" }}
     >
-      <img
-        src={props.image}
-        alt={props.name}
-        style={{ width: "300px", height: "450px" }}
-      />
+      {props.image ? (
+        <img
+          src={props.image}
+          alt={props.name}
+          style={{ width: "300px", height: "450px" }}
+        />
+      ) : (
+        <div style={{ color: "red" }}>photo is not in the API</div>
+      )}
       <p className="hero_name">Name: {props.name}</p>
       <p className="hero_house">Faculty: {props.house}</p>
       {status && (

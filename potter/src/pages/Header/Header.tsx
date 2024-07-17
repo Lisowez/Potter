@@ -2,7 +2,7 @@ import logo from "./logo.svg"
 import style from "./Header.module.css"
 import { HeaderButton } from "../../components/Buttons/HeaderButton"
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useContext } from "react"
 import {
   CharacterContext,
@@ -12,36 +12,52 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../App/store/store"
 import {
   checkFavorite,
+  checkHistory,
   checkUserActive,
   loadUserData,
 } from "../../App/store/userSlice"
-import { getUserActive, removeUser } from "../../utils/LS/forWorkWithUser"
+import {
+  addHistory,
+  getUserActive,
+  removeUser,
+} from "../../utils/LS/forWorkWithUser"
 import useDebounce from "./useDebounce"
 
 export const Header = () => {
+  const location = useLocation()
   const [searchText, setSearchText] = useState<string>("")
+
   const debouncedSearchText = useDebounce(searchText, 500)
   const { characters } = useContext(CharacterContext) as CharacterContextType
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isVisibleSuggest, setisVisibleSuggest] = useState(true)
-
   useEffect(() => {
     const user = getUserActive()
     if (user) {
       dispatch(checkUserActive({ user }))
     }
-  }, [dispatch, status, navigate])
+    if (location.pathname === "/search") {
+      setSearchText(location.search.slice(1))
+    } else {
+      setSearchText("")
+    }
+  }, [dispatch, status, navigate, location])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)
   }
 
   function startSearch() {
-    // console.log(filteredCharacters) // действие при нажатии на кнопку поиска
+    addHistory(debouncedSearchText)
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(checkHistory({ user: userData }))
+    }
+    navigate(`/search?${debouncedSearchText}`)
   }
-
   function handleClickSuggest(id: string) {
     return () => {
       navigate(`/hero/${id}`)
