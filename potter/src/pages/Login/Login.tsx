@@ -56,7 +56,7 @@ export const Login = () => {
         dispatch(checkUserActive({ user }))
         const userData = JSON.parse(user)
         dispatch(checkFavorite({ user: userData }))
-      }
+      } 
     }
   }
 

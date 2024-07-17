@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux"
+import PropTypes from "prop-types"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 import { RootState } from "../../App/store/store"
@@ -7,11 +8,7 @@ import {
   getUserActive,
   removeFavorite,
 } from "../../utils/LS/forWorkWithUser"
-import {
-  checkFavorite,
-  checkUserActive,
-  loadUserData,
-} from "../../App/store/userSlice"
+import { checkFavorite, loadUserData } from "../../App/store/userSlice"
 import { useEffect } from "react"
 
 interface HeroCardInterface {
@@ -78,4 +75,11 @@ export const HeroCard = (props: HeroCardInterface) => {
       )}
     </div>
   )
+}
+
+HeroCard.propTypes = {
+  id: PropTypes.string,
+  image: PropTypes.string,
+  name: PropTypes.string,
+  house: PropTypes.string,
 }
