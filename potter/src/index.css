@@ -15,7 +15,9 @@ body {
 .registration,
 .login,
 .home,
-.item {
+.item,
+.favorite,
+.history {
   display: flex;
   align-items: center;
   width: 90vw;

@@ -1,25 +1,36 @@
 import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
-
-interface allUserInfo {
-  user: Credentials
-  history: string[]
-  favorites: string[]
-}
+import { useDispatch, useSelector } from "react-redux"
+import { checkFavorite, checkUserActive } from "../../App/store/userSlice"
+import { RootState } from "../../App/store/store"
+import {
+  allUserInfo,
+  getAllUser,
+  getUserActive,
+  setAllUsers,
+  setUserActive,
+} from "../../utils/LS/forWorkWithUser"
 
 export const Registration = () => {
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [error, setError] = useState("")
 
   useEffect(() => {
-    const userActive = localStorage.getItem("userActive") // заменить на проверку redax
-    if (userActive) navigate("/")
-  }, [])
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
+
+    if (status) {
+      navigate("/")
+    }
+  }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
-    const UsersJSON = localStorage.getItem("users")
-    let users: allUserInfo[] = UsersJSON ? JSON.parse(UsersJSON) : []
+    let users: allUserInfo[] = getAllUser()
 
     if (users.filter(x => x.user.email === data.email).length === 0) {
       const userInfo: allUserInfo = {
@@ -28,15 +39,21 @@ export const Registration = () => {
         favorites: [],
       }
       users.push(userInfo)
-      localStorage.setItem("users", JSON.stringify(users))
-      localStorage.setItem("userActive", JSON.stringify(userInfo))
+      setAllUsers(users)
+      setUserActive(userInfo)
+      const user = getUserActive()
+      if (user) {
+        dispatch(checkUserActive({ user }))
+        const userData = JSON.parse(user)
+        dispatch(checkFavorite({ user: userData }))
+      }
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
       setTimeout(() => {
         setError("")
       }, 2000)
     }
-    if (localStorage.getItem("userActive")) {
+    if (getUserActive()) {
       navigate("/")
     }
   }

@@ -7,15 +7,30 @@ import { useContext } from "react"
 import {
   CharacterContext,
   CharacterContextType,
-} from "../../ulits/context/CharacterContext"
-import { useUserLogin } from "./useUserLogin"
+} from "../../utils/context/CharacterContext"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../App/store/store"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
+import { getUserActive, removeUser } from "../../utils/LS/forWorkWithUser"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
   const { characters } = useContext(CharacterContext) as CharacterContextType
-  const { isLogined, handleLogout } = useUserLogin()
-
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isVisibleSuggest, setisVisibleSuggest] = useState(true)
+
+  useEffect(() => {
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
+  }, [dispatch, status, navigate])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)
@@ -33,12 +48,26 @@ export const Header = () => {
   }
 
   function onClickLogout() {
-    handleLogout()
+    removeUser()
+    const user = getUserActive()
+    if (!user) {
+      dispatch(checkUserActive({ user: null }))
+      //   const userData = JSON.parse(user)
+      //   dispatch(checkFavorite({ user: userData }))
+    }
     navigate("/")
   }
 
   return (
-    <header className={style.header}>
+    <header
+      className={style.header}
+      onClick={e =>
+        (e.target as HTMLElement).classList.contains(style.suggestion) ||
+        (e.target as HTMLElement).classList.contains(style.search_input)
+          ? setisVisibleSuggest(true)
+          : setisVisibleSuggest(false)
+      }
+    >
       <Link to="/">
         {" "}
         <img src={logo} alt="logo" />
@@ -52,7 +81,7 @@ export const Header = () => {
           value={searchText}
           placeholder="search..."
         />
-        {searchText.length > 0 && (
+        {searchText.length > 0 && isVisibleSuggest && (
           <div className={style.suggestions}>
             {characters
               .filter(x =>
@@ -74,7 +103,7 @@ export const Header = () => {
         </button>
       </div>
       <div className={style.buttons_header}>
-        {isLogined ? (
+        {status ? (
           <>
             <HeaderButton type="history" />
             <HeaderButton type="favorite" />

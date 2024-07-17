@@ -1,25 +1,34 @@
 import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
-
-interface allUserInfo {
-  user: Credentials
-  history: string[]
-  favorites: string[]
-}
+import { useDispatch, useSelector } from "react-redux"
+import { checkFavorite, checkUserActive } from "../../App/store/userSlice"
+import { RootState } from "../../App/store/store"
+import {
+  allUserInfo,
+  getAllUser,
+  getUserActive,
+  setUserActive,
+} from "../../utils/LS/forWorkWithUser"
 
 export const Login = () => {
   const navigate = useNavigate()
   const [error, setError] = useState("")
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const userActive = localStorage.getItem("userActive") // заменить на проверку redax
-    if (userActive) navigate("/")
-  }, [])
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
+    if (status) {
+      navigate("/")
+    }
+  }, [dispatch, status, navigate])
 
   const onSubmit = (data: Credentials) => {
-    const UsersJSON = localStorage.getItem("users")
-    let users: allUserInfo[] = UsersJSON ? JSON.parse(UsersJSON) : []
+    let users: allUserInfo[] = getAllUser()
 
     if (users.filter(x => x.user.email === data.email).length === 0) {
       setError("This email address is not registered")
@@ -41,10 +50,13 @@ export const Login = () => {
       ).length > 0
     ) {
       const userActive = users.filter(x => x.user.email === data.email)[0]
-      localStorage.setItem("userActive", JSON.stringify(userActive))
-    }
-    if (localStorage.getItem("userActive")) {
-      navigate("/")
+      setUserActive(userActive)
+      const user = getUserActive()
+      if (user) {
+        dispatch(checkUserActive({ user }))
+        const userData = JSON.parse(user)
+        dispatch(checkFavorite({ user: userData }))
+      }
     }
   }
 

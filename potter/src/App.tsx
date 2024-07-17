@@ -1,34 +1,39 @@
 import "./App.css"
 import { RouterProvider } from "react-router-dom"
-import { router } from "./ulits/router"
-import { useEffect, useState } from "react"
-import { Character } from "./ulits/interface/Character"
-import { CharacterContext } from "./ulits/context/CharacterContext"
+import { router } from "./utils/router"
+import { useEffect, useState, useMemo } from "react"
+import { Character } from "./utils/interface/Character"
+import { CharacterContext } from "./utils/context/CharacterContext"
+import { Suspense } from "react"
+import { Loading } from "./pages/Loading/Loading"
+import { withErrorBoundary } from "react-error-boundary"
+import ErrorPage from "./pages/Error/Error"
+import { useGetCharactersQuery } from "./App/store/api/api"
 
 const App = () => {
   const [characters, setCharacters] = useState<Character[]>([])
-
+  const { data } = useGetCharactersQuery()
   useEffect(() => {
-    const responseData = async () => {
-      try {
-        const response = await fetch(
-          "https://hp-api.onrender.com/api/characters",
-        )
-        const data: Character[] = await response.json()
-        setCharacters(data)
-      } catch (error) {
-        throw new Error(`${error}`)
-      }
+    if (data) {
+      setCharacters(data)
     }
-    responseData()
-  }, [])
+  }, [data])
+
+  const characterContextValue = useMemo(() => {
+    return { characters }
+  }, [characters])
+
   return (
-    <CharacterContext.Provider value={{ characters}}>
+    <CharacterContext.Provider value={characterContextValue}>
       <div className="App">
-        <RouterProvider router={router}></RouterProvider>
+        <Suspense fallback={<Loading />}>
+          <RouterProvider router={router}></RouterProvider>
+        </Suspense>
       </div>
     </CharacterContext.Provider>
   )
 }
 
-export default App
+export default withErrorBoundary(App, {
+  fallback: <ErrorPage text="Something went wrong" />,
+})

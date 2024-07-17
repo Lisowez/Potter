@@ -1,20 +1,29 @@
-import { useRouteError } from "react-router-dom"
+import style from "./Error.module.css"
+import { useNavigate } from "react-router-dom"
 
 interface Error {
   statusText?: string
   message?: string
 }
 
-export default function Error() {
-  const error = useRouteError() as Error // пришлось применить as  так как не получалось протипизировать данный элемент
+interface Error {
+  text: string
+}
+
+export default function ErrorPage({ text }: Error) {
+  const navigate = useNavigate()
+  function goHome() {
+    navigate("/")
+  }
 
   return (
-    <div id="error-page">
+    <div id="error-page" className={style.error}>
       <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
+      <p>{text}</p>
+
+      <button className={style.goHome} onClick={goHome}>
+        Go Home
+      </button>
     </div>
   )
 }

@@ -1,27 +1,58 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Character } from "../../ulits/interface/Character"
+import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  removeFavorite,
+  addFavorite,
+  getUserActive,
+} from "../../utils/LS/forWorkWithUser"
+import { RootState } from "../../App/store/store"
+import { useGetCharacterByIDQuery } from "../../App/store/api/api"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
 
 const Item = () => {
   const { id } = useParams()
-
+  const { data } = useGetCharacterByIDQuery(id!)
   const [itemData, setItemData] = useState<Character | null>(null)
 
   useEffect(() => {
-    const fetchItemData = async () => {
-      try {
-        const response = await fetch(
-          `https://hp-api.onrender.com/api/character/${id}`,
-        )
-        const data: Character[] = await response.json()
-        setItemData(data[0])
-      } catch (error) {
-        throw new Error(`error:${error}`)
+    if (data) {
+      const user = getUserActive()
+      if (user) {
+        const userData = JSON.parse(user)
+        dispatch(loadUserData({ user: userData }))
       }
+      setItemData(data[0])
     }
-    fetchItemData()
-  }, [id])
+  }, [data])
+
+  const dispatch = useDispatch()
+
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+
+  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+
+  const isFavorite = favorites.includes(id!)
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    if (isFavorite) {
+      removeFavorite(id!)
+    } else {
+      addFavorite(id!)
+    }
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(checkFavorite({ user: userData }))
+    }
+  }
 
   return (
     <div
@@ -29,7 +60,7 @@ const Item = () => {
       style={{
         color: "gold",
         flexDirection: "column",
-        gap: "20px",
+        gap: "15px",
         fontSize: "30px",
         width: "30%",
         border: "5px solid gold",
@@ -45,6 +76,11 @@ const Item = () => {
       <p className={style.item_name}>Name: {itemData?.name}</p>
       <p className={style.item_house}>Faculty: {itemData?.house}</p>
       <p className={style.item_actor}>Actor: {itemData?.actor}</p>
+      {status && (
+        <button className={style.button} onClick={handleFavoriteClick}>
+          {isFavorite ? "Remove from favorites" : "Add to favorites"}
+        </button>
+      )}
     </div>
   )
 }

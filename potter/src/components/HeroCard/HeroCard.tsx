@@ -1,5 +1,18 @@
+import { useSelector, useDispatch } from "react-redux"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
+import { RootState } from "../../App/store/store"
+import {
+  addFavorite,
+  getUserActive,
+  removeFavorite,
+} from "../../utils/LS/forWorkWithUser"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
+import { useEffect } from "react"
 
 interface HeroCardInterface {
   id: string
@@ -10,10 +23,43 @@ interface HeroCardInterface {
 
 export const HeroCard = (props: HeroCardInterface) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+
+  const isFavorite = favorites?.includes(props.id)
+
+  const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    if (isFavorite) {
+      removeFavorite(props.id)
+    } else {
+      addFavorite(props.id)
+    }
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(checkFavorite({ user: userData }))
+    }
+  }
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!(e.target as HTMLElement).classList.contains(style.button)) {
+      navigate(`/hero/${props.id}`)
+    }
+  }
+
+  useEffect(() => {
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(loadUserData({ user: userData }))
+    }
+  }, [favorites.length])
 
   return (
     <div
-      onClick={() => navigate(`/hero/${props.id}`)}
+      onClick={handleCardClick}
       className={style.hero_card}
       id={props.id}
       style={{ color: "gold", padding: "10px", border: "2px solid gold" }}
@@ -25,6 +71,11 @@ export const HeroCard = (props: HeroCardInterface) => {
       />
       <p className="hero_name">Name: {props.name}</p>
       <p className="hero_house">Faculty: {props.house}</p>
+      {status && (
+        <button className={style.button} onClick={handleFavoriteClick}>
+          {isFavorite ? "Remove from favorites" : "Add to favorites"}
+        </button>
+      )}
     </div>
   )
 }
