@@ -16,9 +16,11 @@ import {
   loadUserData,
 } from "../../App/store/userSlice"
 import { getUserActive, removeUser } from "../../utils/LS/forWorkWithUser"
+import useDebounce from "./useDebounce"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
+  const debouncedSearchText = useDebounce(searchText, 500)
   const { characters } = useContext(CharacterContext) as CharacterContextType
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const dispatch = useDispatch()
@@ -52,8 +54,6 @@ export const Header = () => {
     const user = getUserActive()
     if (!user) {
       dispatch(checkUserActive({ user: null }))
-      //   const userData = JSON.parse(user)
-      //   dispatch(checkFavorite({ user: userData }))
     }
     navigate("/")
   }
@@ -78,14 +78,16 @@ export const Header = () => {
           className={style.search_input}
           type="text"
           onChange={setInputText}
-          value={searchText}
+          value={debouncedSearchText}
           placeholder="search..."
         />
-        {searchText.length > 0 && isVisibleSuggest && (
+        {debouncedSearchText.length > 0 && isVisibleSuggest && (
           <div className={style.suggestions}>
             {characters
               .filter(x =>
-                x.name.toLowerCase().includes(searchText.toLowerCase()),
+                x.name
+                  .toLowerCase()
+                  .includes(debouncedSearchText.toLowerCase()),
               )
               .map(x => (
                 <div
