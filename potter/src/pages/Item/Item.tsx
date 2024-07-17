@@ -15,11 +15,12 @@ import {
   checkUserActive,
   loadUserData,
 } from "../../App/store/userSlice"
+import { NewInterfaceForData } from "../../App/store/api/transformAPI"
 
 const Item = () => {
   const { id } = useParams()
   const { data } = useGetCharacterByIDQuery(id!)
-  const [itemData, setItemData] = useState<Character | null>(null)
+  const [itemData, setItemData] = useState<NewInterfaceForData | null>(null)
 
   useEffect(() => {
     if (data) {
