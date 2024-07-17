@@ -19,7 +19,11 @@ export const Registration = () => {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    dispatch(checkUserActive())
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
+
     if (status) {
       navigate("/")
     }
@@ -37,8 +41,12 @@ export const Registration = () => {
       users.push(userInfo)
       setAllUsers(users)
       setUserActive(userInfo)
-      dispatch(checkUserActive())
-      dispatch(checkFavorite())
+      const user = getUserActive()
+      if (user) {
+        dispatch(checkUserActive({ user }))
+        const userData = JSON.parse(user)
+        dispatch(checkFavorite({ user: userData }))
+      }
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
       setTimeout(() => {

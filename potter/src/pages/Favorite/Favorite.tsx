@@ -7,7 +7,6 @@ import {
   CharacterContextType,
 } from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
-import { loadUserData } from "../../App/store/userSlice"
 
 export const Favorite = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
@@ -15,7 +14,6 @@ export const Favorite = () => {
   const { characters } = useContext(CharacterContext) as CharacterContextType
   const favorites = useSelector((state: RootState) => state.userSlice.favorites)
   const [favoriteCharacters, setFavoriteCharacters] = useState(characters)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!status) {

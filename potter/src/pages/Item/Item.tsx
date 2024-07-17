@@ -3,10 +3,18 @@ import { useParams } from "react-router-dom"
 import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
-import { removeFavorite, addFavorite } from "../../utils/LS/forWorkWithUser"
+import {
+  removeFavorite,
+  addFavorite,
+  getUserActive,
+} from "../../utils/LS/forWorkWithUser"
 import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
-import { checkFavorite, loadUserData } from "../../App/store/userSlice"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
 
 const Item = () => {
   const { id } = useParams()
@@ -15,7 +23,11 @@ const Item = () => {
 
   useEffect(() => {
     if (data) {
-      dispatch(loadUserData())
+      const user = getUserActive()
+      if (user) {
+        const userData = JSON.parse(user)
+        dispatch(loadUserData({ user: userData }))
+      }
       setItemData(data[0])
     }
   }, [data])
@@ -32,10 +44,13 @@ const Item = () => {
     e.stopPropagation()
     if (isFavorite) {
       removeFavorite(id!)
-      dispatch(checkFavorite())
     } else {
       addFavorite(id!)
-      dispatch(checkFavorite())
+    }
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(checkFavorite({ user: userData }))
     }
   }
 

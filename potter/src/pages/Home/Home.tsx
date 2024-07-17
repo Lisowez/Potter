@@ -1,12 +1,9 @@
 import { useContext } from "react"
 import { CharacterContext } from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
-import { useDispatch } from "react-redux"
-import { loadUserData } from "../../App/store/userSlice"
 
 const Home = () => {
   const context = useContext(CharacterContext)
-  const dispatch = useDispatch()
   if (context) {
     const { characters } = context
     const charactersHome = characters.slice(0, 12)

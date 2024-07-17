@@ -7,6 +7,7 @@ import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
   getAllUser,
+  getUserActive,
   setUserActive,
 } from "../../utils/LS/forWorkWithUser"
 
@@ -17,7 +18,10 @@ export const Login = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(checkUserActive())
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
     if (status) {
       navigate("/")
     }
@@ -47,8 +51,12 @@ export const Login = () => {
     ) {
       const userActive = users.filter(x => x.user.email === data.email)[0]
       setUserActive(userActive)
-      dispatch(checkUserActive())
-      dispatch(checkFavorite())
+      const user = getUserActive()
+      if (user) {
+        dispatch(checkUserActive({ user }))
+        const userData = JSON.parse(user)
+        dispatch(checkFavorite({ user: userData }))
+      }
     }
   }
 

@@ -2,8 +2,16 @@ import { useSelector, useDispatch } from "react-redux"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 import { RootState } from "../../App/store/store"
-import { addFavorite, removeFavorite } from "../../utils/LS/forWorkWithUser"
-import { checkFavorite, loadUserData } from "../../App/store/userSlice"
+import {
+  addFavorite,
+  getUserActive,
+  removeFavorite,
+} from "../../utils/LS/forWorkWithUser"
+import {
+  checkFavorite,
+  checkUserActive,
+  loadUserData,
+} from "../../App/store/userSlice"
 import { useEffect } from "react"
 
 interface HeroCardInterface {
@@ -19,16 +27,19 @@ export const HeroCard = (props: HeroCardInterface) => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const favorites = useSelector((state: RootState) => state.userSlice.favorites)
 
-  const isFavorite = favorites.includes(props.id)
+  const isFavorite = favorites?.includes(props.id)
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     if (isFavorite) {
       removeFavorite(props.id)
-      dispatch(checkFavorite())
     } else {
       addFavorite(props.id)
-      dispatch(checkFavorite())
+    }
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(checkFavorite({ user: userData }))
     }
   }
 
@@ -39,8 +50,12 @@ export const HeroCard = (props: HeroCardInterface) => {
   }
 
   useEffect(() => {
-    dispatch(loadUserData())
-  }, [])
+    const user = getUserActive()
+    if (user) {
+      const userData = JSON.parse(user)
+      dispatch(loadUserData({ user: userData }))
+    }
+  }, [favorites.length])
 
   return (
     <div

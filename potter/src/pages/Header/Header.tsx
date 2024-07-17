@@ -15,7 +15,7 @@ import {
   checkUserActive,
   loadUserData,
 } from "../../App/store/userSlice"
-import { removeUser } from "../../utils/LS/forWorkWithUser"
+import { getUserActive, removeUser } from "../../utils/LS/forWorkWithUser"
 
 export const Header = () => {
   const [searchText, setSearchText] = useState<string>("")
@@ -26,7 +26,10 @@ export const Header = () => {
   const [isVisibleSuggest, setisVisibleSuggest] = useState(true)
 
   useEffect(() => {
-    dispatch(checkUserActive())
+    const user = getUserActive()
+    if (user) {
+      dispatch(checkUserActive({ user }))
+    }
   }, [dispatch, status, navigate])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -46,8 +49,12 @@ export const Header = () => {
 
   function onClickLogout() {
     removeUser()
-    dispatch(checkUserActive())
-    dispatch(checkFavorite())
+    const user = getUserActive()
+    if (!user) {
+      dispatch(checkUserActive({ user: null }))
+      //   const userData = JSON.parse(user)
+      //   dispatch(checkFavorite({ user: userData }))
+    }
     navigate("/")
   }
 
