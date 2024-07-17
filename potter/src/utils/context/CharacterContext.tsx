@@ -1,8 +1,8 @@
 import { createContext } from "react"
-import { Character } from "../interface/Character"
+import { NewInterfaceForData } from "../../App/store/api/transformAPI"
 
 export interface CharacterContextType {
-  characters: Character[]
+  characters: NewInterfaceForData[]
 }
 
 export const CharacterContext = createContext<CharacterContextType | null>(null)

@@ -54,3 +54,31 @@ export const removeFavorite = (id: string) => {
     setAllUsers(users)
   }
 }
+
+export const addHistory = (text: string) => {
+  const userJSON = getUserActive()
+  if (userJSON) {
+    const user: allUserInfo = JSON.parse(userJSON)
+    if (!user.history.some(x => x === text)) {
+      user.history.push(text)
+      const users = getAllUser()
+      const index = users.findIndex(x => x.user.email === user.user.email)
+      users[index] = user
+      setUserActive(user)
+      setAllUsers(users)
+    }
+  }
+}
+
+export const removeHistory = (text: string) => {
+  const userJSON = getUserActive()
+  if (userJSON) {
+    const user: allUserInfo = JSON.parse(userJSON)
+    user.history = user.history.filter(x => x !== text)
+    const users = getAllUser()
+    const index = users.findIndex(x => x.user.email === user.user.email)
+    users[index] = user
+    setUserActive(user)
+    setAllUsers(users)
+  }
+}
