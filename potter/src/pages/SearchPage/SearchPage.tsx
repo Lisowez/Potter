@@ -12,7 +12,7 @@ export const SearchPage = () => {
     const searchCharacters = characters.filter(x =>
       x.name.toLowerCase().includes(searchQuery.toLowerCase()),
     )
-    console.log(searchQuery)
+
     return (
       <div
         className="search"
@@ -23,17 +23,23 @@ export const SearchPage = () => {
           justifyContent: "center",
         }}
       >
-        {searchCharacters.map(x => {
-          return (
-            <HeroCard
-              image={x.image}
-              id={x.id}
-              name={x.name}
-              house={x.house}
-              key={x.id}
-            />
-          )
-        })}
+        {searchCharacters.length > 0 ? (
+          searchCharacters.map(x => {
+            return (
+              <HeroCard
+                image={x.image}
+                id={x.id}
+                name={x.name}
+                house={x.house}
+                key={x.id}
+              />
+            )
+          })
+        ) : (
+          <div style={{ color: "gold", fontSize: "30px" }}>
+            Nothing found for this request
+          </div>
+        )}
       </div>
     )
   }
