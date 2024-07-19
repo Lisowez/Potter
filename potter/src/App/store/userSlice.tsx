@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { allUserInfo, getUserActive } from "../../utils/LS/forWorkWithUser"
+import { allUserInfo } from "../../utils/workUser/forWorkWithUser"
 
 interface UserState {
   isLoggedIn: boolean

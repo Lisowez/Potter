@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../../App/store/store"
 import { useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { HistoryDiv } from "../../components/HistoryDiv/HistoryDiv"
 
 export const History = () => {

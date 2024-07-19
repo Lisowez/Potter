@@ -9,7 +9,7 @@ import {
   getAllUser,
   getUserActive,
   setUserActive,
-} from "../../utils/LS/forWorkWithUser"
+} from "../../utils/workUser/forWorkWithUser"
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -56,7 +56,7 @@ export const Login = () => {
         dispatch(checkUserActive({ user }))
         const userData = JSON.parse(user)
         dispatch(checkFavorite({ user: userData }))
-      } 
+      }
     }
   }
 

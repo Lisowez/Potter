@@ -1,20 +1,15 @@
 import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Character } from "../../utils/interface/Character"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
 import {
   removeFavorite,
   addFavorite,
   getUserActive,
-} from "../../utils/LS/forWorkWithUser"
+} from "../../utils/workUser/forWorkWithUser"
 import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
-import {
-  checkFavorite,
-  checkUserActive,
-  loadUserData,
-} from "../../App/store/userSlice"
+import { checkFavorite, loadUserData } from "../../App/store/userSlice"
 import { NewInterfaceForData } from "../../App/store/api/transformAPI"
 
 const Item = () => {

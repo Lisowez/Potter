@@ -1,5 +1,5 @@
-import { ListenerMiddleware, createListenerMiddleware } from "@reduxjs/toolkit"
-import { getUserActive } from "../../utils/LS/forWorkWithUser"
+import { createListenerMiddleware } from "@reduxjs/toolkit"
+import { getUserActive } from "../../utils/workUser/forWorkWithUser"
 import { checkFavorite, checkHistory, loadUserData } from "./userSlice"
 
 export const userListenerMiddleware = createListenerMiddleware()

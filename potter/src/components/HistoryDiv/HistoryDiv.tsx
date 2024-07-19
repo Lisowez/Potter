@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
 import style from "./HistoryDiv.module.css"
-import { getUserActive, removeHistory } from "../../utils/LS/forWorkWithUser"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../App/store/store"
-
+import {
+  getUserActive,
+  removeHistory,
+} from "../../utils/workUser/forWorkWithUser"
+import { useDispatch } from "react-redux"
 import { checkHistory } from "../../App/store/userSlice"
 
 interface Props {

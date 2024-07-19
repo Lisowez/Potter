@@ -10,7 +10,7 @@ import {
   getUserActive,
   setAllUsers,
   setUserActive,
-} from "../../utils/LS/forWorkWithUser"
+} from "../../utils/workUser/forWorkWithUser"
 
 export const Registration = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)

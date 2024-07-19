@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { RootState } from "../../App/store/store"
 import { useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"

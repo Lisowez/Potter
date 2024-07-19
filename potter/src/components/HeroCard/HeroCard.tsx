@@ -7,9 +7,9 @@ import {
   addFavorite,
   getUserActive,
   removeFavorite,
-} from "../../utils/LS/forWorkWithUser"
+} from "../../utils/workUser/forWorkWithUser"
 import { checkFavorite, loadUserData } from "../../App/store/userSlice"
-import { Fragment, useEffect } from "react"
+import { useEffect } from "react"
 
 interface HeroCardInterface {
   id: string
