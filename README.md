@@ -1,7 +1,7 @@
 # <h1>Potter</h1>
 
 * Проект представляет собой карточки героев вселенной Гарри Поттера.
-* Использовано [HP-API // The Harry Potter API](https://hp-api.onrender.com/)](https://hp-api.onrender.com/). 
+* Использовано [HP-API // The Harry Potter API](https://hp-api.onrender.com/). 
 * [Посмотреть проект](https://potter-nu.vercel.app/).
 
 ## Реализованы следующие требования к функциональности:
