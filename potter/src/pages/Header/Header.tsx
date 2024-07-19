@@ -22,7 +22,7 @@ export const Header = () => {
   const location = useLocation()
   const [searchText, setSearchText] = useState<string>("")
 
-  const debouncedSearchText = useDebounce(searchText, 500)
+  const debouncedSearchText = useDebounce(searchText, 200)
   const { characters } = useContext(CharacterContext) as CharacterContextType
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const dispatch = useDispatch()
