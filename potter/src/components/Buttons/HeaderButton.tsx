@@ -16,6 +16,6 @@ export const HeaderButton = (props: HeaderButtonProps) => {
   )
 }
 
-HeaderButton.propsType = {
+HeaderButton.propsTypes = {
   type: PropTypes.string,
 }
