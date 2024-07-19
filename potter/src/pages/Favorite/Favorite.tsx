@@ -11,7 +11,8 @@ import { HeroCard } from "../../components/HeroCard/HeroCard"
 export const Favorite = () => {
   const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const navigate = useNavigate()
-  const { characters } = useContext(CharacterContext) as CharacterContextType
+  const characterContext = useContext(CharacterContext)
+  const characters = characterContext?.characters || []
   const favorites = useSelector((state: RootState) => state.userSlice.favorites)
   const [favoriteCharacters, setFavoriteCharacters] = useState(characters)
 
