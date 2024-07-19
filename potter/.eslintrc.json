@@ -31,5 +31,27 @@
   "overrides": [
     { "files": ["*.{c,m,}{t,j}s", "*.{t,j}sx"] },
     { "files": ["*{test,spec}.{t,j}s?(x)"], "env": { "jest": true } }
+  ],
+  "no-console": ["warn", { "allow": ["error", "warn"] }],
+  "curly": "error",
+  "import/prefer-default-export": "off",
+  "react/jsx-no-useless-fragment": "error",
+  "no-unused-expressions": "error",
+  "import/order": [
+    "error",
+    {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index",
+        "object",
+        "type"
+      ],
+      "newlines-between": "always",
+      "alphabetize": { "order": "asc", "ignoreCase": true }
+    }
   ]
 }

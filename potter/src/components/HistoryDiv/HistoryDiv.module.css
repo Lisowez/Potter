@@ -1,0 +1,30 @@
+.item {
+  width: 90vw;
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px gold solid;
+  padding: 10px;
+}
+
+.link {
+  color: gold;
+  font-size: 25px;
+  font-style: italic;
+}
+
+.button {
+  border-color: gold;
+  background-color: black;
+  color: gold;
+  height: 30px;
+  padding: 5px;
+  transition: 0.5s;
+}
+
+.button:hover {
+  background-color: gold;
+  color: black;
+  transition: 0.5s;
+}
