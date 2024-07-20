@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkFavorite, checkUserActive } from "../../App/store/userSlice"
+import { checkFavorite, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
 import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
@@ -13,7 +13,7 @@ import {
 } from "../../utils/workUser/forWorkWithUser"
 
 export const Registration = () => {
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const status = useSelector(getUserIsLoggedIn)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [error, setError] = useState("")

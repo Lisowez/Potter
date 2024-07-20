@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { allUserInfo } from "../../utils/workUser/forWorkWithUser"
+import { RootState } from "./store"
 
 interface UserState {
   isLoggedIn: boolean
@@ -40,3 +41,8 @@ const userSlice = createSlice({
 export const { checkUserActive, checkFavorite, loadUserData, checkHistory } =
   userSlice.actions
 export default userSlice.reducer
+
+export const getUserFavorites = (state: RootState) => state.userSlice.favorites
+export const getUserHistory = (state: RootState) => state.userSlice.history
+export const getUserIsLoggedIn = (state: RootState) =>
+  state.userSlice.isLoggedIn

@@ -7,12 +7,13 @@ import {
   CharacterContextType,
 } from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
+import { getUserFavorites } from "../../App/store/userSlice"
 
 export const Favorite = () => {
   const navigate = useNavigate()
   const characterContext = useContext(CharacterContext)
   const characters = characterContext?.characters || []
-  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+  const favorites = useSelector(getUserFavorites)
   const [favoriteCharacters, setFavoriteCharacters] = useState(characters)
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export const Favorite = () => {
       favorites.includes(character.id),
     )
     setFavoriteCharacters(filteredCharacters)
-  }, [ navigate, characters, favorites])
+  }, [navigate, characters, favorites])
 
   if (favoriteCharacters.length === 0) {
     return (

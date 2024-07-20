@@ -3,9 +3,10 @@ import { RootState } from "../../App/store/store"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { HistoryDiv } from "../../components/HistoryDiv/HistoryDiv"
+import { getUserHistory } from "../../App/store/userSlice"
 
 export const History = () => {
-  const history = useSelector((state: RootState) => state.userSlice.history)
+  const history = useSelector(getUserHistory)
 
   if (history.length === 0) {
     return (

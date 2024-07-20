@@ -10,7 +10,7 @@ import {
 } from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../App/store/store"
-import { checkHistory, checkUserActive } from "../../App/store/userSlice"
+import { checkHistory, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
 import {
   addHistory,
   getUserActive,
@@ -24,7 +24,7 @@ export const Header = () => {
 
   const debouncedSearchText = useDebounce(searchText, 200)
   const { characters } = useContext(CharacterContext) as CharacterContextType
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const status = useSelector(getUserIsLoggedIn)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isVisibleSuggest, setisVisibleSuggest] = useState(true)

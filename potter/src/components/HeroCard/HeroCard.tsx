@@ -8,7 +8,7 @@ import {
   getUserActive,
   removeFavorite,
 } from "../../utils/workUser/forWorkWithUser"
-import { checkFavorite, loadUserData } from "../../App/store/userSlice"
+import { checkFavorite, getUserFavorites, getUserIsLoggedIn, loadUserData } from "../../App/store/userSlice"
 import { useEffect } from "react"
 
 interface HeroCardInterface {
@@ -21,8 +21,8 @@ interface HeroCardInterface {
 export const HeroCard = (props: HeroCardInterface) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
-  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+  const status = useSelector(getUserIsLoggedIn)
+  const favorites = useSelector(getUserFavorites)
 
   const isFavorite = favorites?.includes(props.id)
 

@@ -9,7 +9,7 @@ import {
 } from "../../utils/workUser/forWorkWithUser"
 import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
-import { checkFavorite, loadUserData } from "../../App/store/userSlice"
+import { checkFavorite, getUserFavorites, getUserIsLoggedIn, loadUserData } from "../../App/store/userSlice"
 import { NewInterfaceForData } from "../../App/store/api/transformAPI"
 
 const Item = () => {
@@ -30,9 +30,9 @@ const Item = () => {
 
   const dispatch = useDispatch()
 
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
+  const status = useSelector(getUserIsLoggedIn)
 
-  const favorites = useSelector((state: RootState) => state.userSlice.favorites)
+  const favorites = useSelector(getUserFavorites)
 
   const isFavorite = favorites.includes(id!)
 
