@@ -9,7 +9,6 @@ import {
   CharacterContextType,
 } from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../App/store/store"
 import { checkHistory, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
 import {
   addHistory,

@@ -7,7 +7,6 @@ import {
   addFavorite,
   getUserActive,
 } from "../../utils/workUser/forWorkWithUser"
-import { RootState } from "../../App/store/store"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
 import { checkFavorite, getUserFavorites, getUserIsLoggedIn, loadUserData } from "../../App/store/userSlice"
 import { NewInterfaceForData } from "../../App/store/api/transformAPI"

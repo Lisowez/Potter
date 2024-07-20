@@ -3,7 +3,6 @@ import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { checkFavorite, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
-import { RootState } from "../../App/store/store"
 import {
   allUserInfo,
   getAllUser,

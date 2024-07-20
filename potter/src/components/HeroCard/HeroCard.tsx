@@ -2,14 +2,16 @@ import { useSelector, useDispatch } from "react-redux"
 import PropTypes from "prop-types"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
-import { RootState } from "../../App/store/store"
 import {
   addFavorite,
   getUserActive,
   removeFavorite,
 } from "../../utils/workUser/forWorkWithUser"
-import { checkFavorite, getUserFavorites, getUserIsLoggedIn, loadUserData } from "../../App/store/userSlice"
-import { useEffect } from "react"
+import {
+  checkFavorite,
+  getUserFavorites,
+  getUserIsLoggedIn,
+} from "../../App/store/userSlice"
 
 interface HeroCardInterface {
   id: string
@@ -46,13 +48,6 @@ export const HeroCard = (props: HeroCardInterface) => {
     }
   }
 
-  useEffect(() => {
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(loadUserData({ user: userData }))
-    }
-  }, [favorites.length])
   return (
     <div
       onClick={handleCardClick}
