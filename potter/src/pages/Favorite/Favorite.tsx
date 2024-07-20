@@ -9,7 +9,6 @@ import {
 import { HeroCard } from "../../components/HeroCard/HeroCard"
 
 export const Favorite = () => {
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const navigate = useNavigate()
   const characterContext = useContext(CharacterContext)
   const characters = characterContext?.characters || []
@@ -17,14 +16,11 @@ export const Favorite = () => {
   const [favoriteCharacters, setFavoriteCharacters] = useState(characters)
 
   useEffect(() => {
-    if (!status) {
-      navigate("/")
-    }
     const filteredCharacters = characters.filter(character =>
       favorites.includes(character.id),
     )
     setFavoriteCharacters(filteredCharacters)
-  }, [status, navigate, characters, favorites])
+  }, [ navigate, characters, favorites])
 
   if (favoriteCharacters.length === 0) {
     return (

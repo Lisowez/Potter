@@ -5,15 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { HistoryDiv } from "../../components/HistoryDiv/HistoryDiv"
 
 export const History = () => {
-  const navigate = useNavigate()
-  const status = useSelector((state: RootState) => state.userSlice.isLoggedIn)
   const history = useSelector((state: RootState) => state.userSlice.history)
-
-  useEffect(() => {
-    if (!status) {
-      navigate("/")
-    }
-  }, [status, navigate])
 
   if (history.length === 0) {
     return (

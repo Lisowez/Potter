@@ -7,6 +7,7 @@ import Main from "../pages/Main/Main"
 import { Favorite } from "../pages/Favorite/Favorite"
 import { History } from "../pages/History/History"
 import { SearchPage } from "../pages/SearchPage/SearchPage"
+import { ProtectedRoute } from "./protectedRouter"
 const Home = lazy(() => import("../pages/Home/Home"))
 const Item = lazy(() => import("../pages/Item/Item"))
 
@@ -31,11 +32,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/favorite",
-        element: <Favorite />,
+        element: <ProtectedRoute page={<Favorite />} />,
       },
       {
         path: "/history",
-        element: <History />,
+        element: <ProtectedRoute page={<History />} />,
       },
       {
         path: "/search",
