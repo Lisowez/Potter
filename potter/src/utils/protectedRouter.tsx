@@ -9,23 +9,7 @@ type Props = {
 }
 
 export const ProtectedRoute = ({ page }: Props) => {
-  const [isLoading, setIsLoading] = useState(true)
   const isLoggedIn = useSelector(getUserIsLoggedIn)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(loadUserData({ user: userData }))
-      setIsLoading(false)
-    }
-  }, [dispatch])
-
-  if (isLoading) {
-    return <Loading />
-  }
-
   if (!isLoggedIn) {
     return <Navigate to="/" />
   }
