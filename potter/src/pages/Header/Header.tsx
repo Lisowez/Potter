@@ -9,7 +9,11 @@ import {
   CharacterContextType,
 } from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
-import { checkHistory, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
+import {
+  checkHistory,
+  checkUserActive,
+  getUserIsLoggedIn,
+} from "../../App/store/userSlice"
 import {
   addHistory,
   getUserActive,
@@ -20,13 +24,14 @@ import useDebounce from "./useDebounce"
 export const Header = () => {
   const location = useLocation()
   const [searchText, setSearchText] = useState<string>("")
+  const [debouncedValue, isDebouncing] = useDebounce(searchText, 500)
 
-  const debouncedSearchText = useDebounce(searchText, 100)
   const { characters } = useContext(CharacterContext) as CharacterContextType
   const status = useSelector(getUserIsLoggedIn)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [isVisibleSuggest, setisVisibleSuggest] = useState(true)
+  const [isVisibleSuggest, setIsVisibleSuggest] = useState(true)
+
   useEffect(() => {
     const user = getUserActive()
     if (user) {
@@ -44,14 +49,15 @@ export const Header = () => {
   }
 
   function startSearch() {
-    addHistory(debouncedSearchText)
+    addHistory(debouncedValue)
     const user = getUserActive()
     if (user) {
       const userData = JSON.parse(user)
       dispatch(checkHistory({ user: userData }))
     }
-    navigate(`/search?${debouncedSearchText}`)
+    navigate(`/search?${debouncedValue}`)
   }
+
   function handleClickSuggest(id: string) {
     return () => {
       navigate(`/hero/${id}`)
@@ -74,12 +80,11 @@ export const Header = () => {
       onClick={e =>
         (e.target as HTMLElement).classList.contains(style.suggestion) ||
         (e.target as HTMLElement).classList.contains(style.search_input)
-          ? setisVisibleSuggest(true)
-          : setisVisibleSuggest(false)
+          ? setIsVisibleSuggest(true)
+          : setIsVisibleSuggest(false)
       }
     >
       <Link to="/">
-        {" "}
         <img src={logo} alt="logo" />
       </Link>
 
@@ -88,16 +93,14 @@ export const Header = () => {
           className={style.search_input}
           type="text"
           onChange={setInputText}
-          value={debouncedSearchText}
+          value={searchText}
           placeholder="search..."
         />
-        {debouncedSearchText.length > 0 && isVisibleSuggest && (
+        {debouncedValue.length > 0 && isVisibleSuggest && !isDebouncing && (
           <div className={style.suggestions}>
             {characters
               .filter(x =>
-                x.name
-                  .toLowerCase()
-                  .includes(debouncedSearchText.toLowerCase()),
+                x.name.toLowerCase().includes(debouncedValue.toLowerCase()),
               )
               .map(x => (
                 <div

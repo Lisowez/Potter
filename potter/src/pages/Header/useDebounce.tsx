@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react"
 
-function useDebounce<T>(value: T, delay: number): T {
+function useDebounce<T>(value: T, delay: number): [T, boolean] {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false)
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value)
-    }, delay)
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    if (value !== debouncedValue) {
+      setIsDebouncing(true)
+      timer = setTimeout(() => {
+        setDebouncedValue(value)
+        setIsDebouncing(false)
+      }, delay)
+    }
 
     return () => {
-      clearTimeout(handler)
+      if (timer) {
+        clearTimeout(timer)
+      }
     }
-  }, [value, delay])
+  }, [value, debouncedValue, delay])
 
-  return debouncedValue
+  return [debouncedValue, isDebouncing]
 }
 
 export default useDebounce
