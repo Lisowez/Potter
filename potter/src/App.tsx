@@ -8,20 +8,24 @@ import { Loading } from "./pages/Loading/Loading"
 import { withErrorBoundary } from "react-error-boundary"
 import ErrorPage from "./pages/Error/Error"
 import { useGetCharactersQuery } from "./App/store/api/api"
-import { NewInterfaceForData } from "./App/store/api/transformAPI"
+import {
+  NewInterfaceForData,
+  transformData,
+} from "./App/store/api/transformAPI"
 
 const App = () => {
-  const [characters, setCharacters] = useState<NewInterfaceForData[]>([])
-  const { data } = useGetCharactersQuery()
-  useEffect(() => {
-    if (data) {
-      setCharacters(data)
-    }
-  }, [data])
-
+  const { data, isLoading, error } = useGetCharactersQuery()
+  const characters: NewInterfaceForData[] = data ? data : []
   const characterContextValue = useMemo(() => {
     return { characters }
   }, [characters])
+
+  if (isLoading) {
+    return <Loading />
+  }
+  if (error) {
+    return <ErrorPage text={"Data loading error"} />
+  }
 
   return (
     <CharacterContext.Provider value={characterContextValue}>
