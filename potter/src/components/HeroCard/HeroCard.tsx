@@ -29,7 +29,6 @@ export const HeroCard = (props: HeroCardInterface) => {
   const isFavorite = favorites?.includes(props.id)
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
     if (isFavorite) {
       removeFavorite(props.id)
     } else {
@@ -67,7 +66,11 @@ export const HeroCard = (props: HeroCardInterface) => {
       <p className="hero_name">Name: {props.name}</p>
       <p className="hero_house">Faculty: {props.house}</p>
       {status && (
-        <button className={style.button} onClick={handleFavoriteClick}>
+        <button
+          className={style.button}
+          type="submit"
+          onClick={handleFavoriteClick}
+        >
           {isFavorite ? "Remove from favorites" : "Add to favorites"}
         </button>
       )}
