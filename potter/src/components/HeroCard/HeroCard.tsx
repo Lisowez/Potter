@@ -8,9 +8,10 @@ import {
   removeFavorite,
 } from "../../utils/workUser/forWorkWithUser"
 import {
-  checkFavorite,
+  addFavorites,
   getUserFavorites,
   getUserIsLoggedIn,
+  removeFavorites,
 } from "../../App/store/userSlice"
 
 interface HeroCardInterface {
@@ -30,14 +31,9 @@ export const HeroCard = (props: HeroCardInterface) => {
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isFavorite) {
-      removeFavorite(props.id)
+      dispatch(removeFavorites({ id: props.id }))
     } else {
-      addFavorite(props.id)
-    }
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(checkFavorite({ user: userData }))
+      dispatch(addFavorites({ id: props.id }))
     }
   }
 

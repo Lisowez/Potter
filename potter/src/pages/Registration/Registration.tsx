@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkFavorite, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
+import { getUserIsLoggedIn, login } from "../../App/store/userSlice"
 import {
   allUserInfo,
   getAllUser,
@@ -18,15 +18,10 @@ export const Registration = () => {
   const [error, setError] = useState("")
 
   useEffect(() => {
-    const user = getUserActive()
-    if (user) {
-      dispatch(checkUserActive({ user }))
-    }
-
     if (status) {
       navigate("/")
     }
-  }, [dispatch, status, navigate])
+  }, [status])
 
   const onSubmit = (data: Credentials) => {
     let users: allUserInfo[] = getAllUser()
@@ -39,13 +34,7 @@ export const Registration = () => {
       }
       users.push(userInfo)
       setAllUsers(users)
-      setUserActive(userInfo)
-      const user = getUserActive()
-      if (user) {
-        dispatch(checkUserActive({ user }))
-        const userData = JSON.parse(user)
-        dispatch(checkFavorite({ user: userData }))
-      }
+      dispatch(login(userInfo))
     } else if (users.filter(x => x.user.email === data.email).length > 0) {
       setError("this email address has already been registered")
       setTimeout(() => {

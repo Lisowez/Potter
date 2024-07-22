@@ -2,7 +2,10 @@ import { useNavigate } from "react-router-dom"
 import { Credentials, Form } from "../../components/Forms/Form"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkFavorite, checkUserActive, getUserIsLoggedIn } from "../../App/store/userSlice"
+import {
+  getUserIsLoggedIn,
+  login,
+} from "../../App/store/userSlice"
 import {
   allUserInfo,
   getAllUser,
@@ -17,14 +20,10 @@ export const Login = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const user = getUserActive()
-    if (user) {
-      dispatch(checkUserActive({ user }))
-    }
     if (status) {
       navigate("/")
     }
-  }, [dispatch, status, navigate])
+  }, [status])
 
   const onSubmit = (data: Credentials) => {
     let users: allUserInfo[] = getAllUser()
@@ -49,13 +48,7 @@ export const Login = () => {
       ).length > 0
     ) {
       const userActive = users.filter(x => x.user.email === data.email)[0]
-      setUserActive(userActive)
-      const user = getUserActive()
-      if (user) {
-        dispatch(checkUserActive({ user }))
-        const userData = JSON.parse(user)
-        dispatch(checkFavorite({ user: userData }))
-      }
+      dispatch(login(userActive))
     }
   }
 

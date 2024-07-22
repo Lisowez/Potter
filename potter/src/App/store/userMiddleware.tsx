@@ -1,29 +1,61 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit"
-import { getUserActive } from "../../utils/workUser/forWorkWithUser"
-import { checkFavorite, checkHistory, loadUserData } from "./userSlice"
+import {
+  addFavorite,
+  addHistory,
+  removeFavorite,
+  removeHistory,
+  removeUser,
+  setUserActive,
+} from "../../utils/workUser/forWorkWithUser"
+import {
+  addFavorites,
+  removeFavorites,
+  addHistories,
+  removeHistories,
+  login,
+  logout,
+} from "./userSlice"
 
 export const userListenerMiddleware = createListenerMiddleware()
 
 userListenerMiddleware.startListening({
-  actionCreator: checkFavorite,
+  actionCreator: addFavorites,
   effect: action => {
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      userData.favorites = action.payload.user.favorites
-      localStorage.setItem("userActive", JSON.stringify(userData))
-    }
+    addFavorite(action.payload.id)
   },
 })
 
 userListenerMiddleware.startListening({
-  actionCreator: checkHistory,
+  actionCreator: removeFavorites,
   effect: action => {
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      userData.history = action.payload.user.history
-      localStorage.setItem("userActive", JSON.stringify(userData))
-    }
+    removeFavorite(action.payload.id)
+  },
+})
+
+userListenerMiddleware.startListening({
+  actionCreator: addHistories,
+  effect: action => {
+    addHistory(action.payload.text)
+  },
+})
+
+userListenerMiddleware.startListening({
+  actionCreator: removeHistories,
+  effect: action => {
+    removeHistory(action.payload.text)
+  },
+})
+
+userListenerMiddleware.startListening({
+  actionCreator: login,
+  effect: (action, listenerApi) => {
+    setUserActive(action.payload)
+  },
+})
+
+userListenerMiddleware.startListening({
+  actionCreator: logout,
+  effect: (action, listenerApi) => {
+    removeUser()
   },
 })

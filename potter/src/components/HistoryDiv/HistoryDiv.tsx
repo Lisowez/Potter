@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom"
 import style from "./HistoryDiv.module.css"
-import {
-  getUserActive,
-  removeHistory,
-} from "../../utils/workUser/forWorkWithUser"
 import { useDispatch } from "react-redux"
-import { checkHistory } from "../../App/store/userSlice"
+import { removeHistories } from "../../App/store/userSlice"
 
 interface Props {
   item: string
@@ -15,12 +11,7 @@ export const HistoryDiv = (props: Props) => {
   const dispatch = useDispatch()
 
   function deleteClick() {
-    removeHistory(props.item)
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(checkHistory({ user: userData }))
-    }
+    dispatch(removeHistories({ text: props.item }))
   }
   return (
     <div className={style.item}>

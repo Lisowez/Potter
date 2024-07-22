@@ -8,7 +8,12 @@ import {
   getUserActive,
 } from "../../utils/workUser/forWorkWithUser"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
-import { checkFavorite, getUserFavorites, getUserIsLoggedIn, loadUserData } from "../../App/store/userSlice"
+import {
+  addFavorites,
+  getUserFavorites,
+  getUserIsLoggedIn,
+  removeFavorites,
+} from "../../App/store/userSlice"
 import { NewInterfaceForData } from "../../App/store/api/transformAPI"
 
 const Item = () => {
@@ -18,11 +23,6 @@ const Item = () => {
 
   useEffect(() => {
     if (data) {
-      const user = getUserActive()
-      if (user) {
-        const userData = JSON.parse(user)
-        dispatch(loadUserData({ user: userData }))
-      }
       setItemData(data[0])
     }
   }, [data])
@@ -38,14 +38,9 @@ const Item = () => {
   const handleFavoriteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     if (isFavorite) {
-      removeFavorite(id!)
+      dispatch(removeFavorites({ id: id! }))
     } else {
-      addFavorite(id!)
-    }
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(checkFavorite({ user: userData }))
+      dispatch(addFavorites({ id: id! }))
     }
   }
 

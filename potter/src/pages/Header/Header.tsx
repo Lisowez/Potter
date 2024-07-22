@@ -10,9 +10,9 @@ import {
 } from "../../utils/context/CharacterContext"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  checkHistory,
-  checkUserActive,
+  addHistories,
   getUserIsLoggedIn,
+  logout,
 } from "../../App/store/userSlice"
 import {
   addHistory,
@@ -33,28 +33,19 @@ export const Header = () => {
   const [isVisibleSuggest, setIsVisibleSuggest] = useState(true)
 
   useEffect(() => {
-    const user = getUserActive()
-    if (user) {
-      dispatch(checkUserActive({ user }))
-    }
     if (location.pathname === "/search") {
       setSearchText(location.search.slice(1))
     } else {
       setSearchText("")
     }
-  }, [dispatch, status, navigate, location])
+  }, [navigate, location])
 
   function setInputText(e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchText(e.target.value)
   }
 
   function startSearch() {
-    addHistory(debouncedValue)
-    const user = getUserActive()
-    if (user) {
-      const userData = JSON.parse(user)
-      dispatch(checkHistory({ user: userData }))
-    }
+    dispatch(addHistories({ text: debouncedValue }))
     navigate(`/search?${debouncedValue}`)
   }
 
@@ -66,11 +57,7 @@ export const Header = () => {
   }
 
   function onClickLogout() {
-    removeUser()
-    const user = getUserActive()
-    if (!user) {
-      dispatch(checkUserActive({ user: null }))
-    }
+    dispatch(logout())
     navigate("/")
   }
 

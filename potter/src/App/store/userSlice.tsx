@@ -1,5 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { allUserInfo } from "../../utils/workUser/forWorkWithUser"
+import {
+  allUserInfo,
+  getUserActive,
+} from "../../utils/workUser/forWorkWithUser"
 import { RootState } from "./store"
 
 interface UserState {
@@ -8,38 +11,61 @@ interface UserState {
   history: string[]
 }
 
-const initialState: UserState = {
-  isLoggedIn: false,
-  favorites: [],
-  history: [],
-}
+const initialState: UserState = (() => {
+  const userJSON = getUserActive()
+  if (userJSON) {
+    const user: allUserInfo = JSON.parse(userJSON)
+    return {
+      isLoggedIn: true,
+      favorites: user.favorites,
+      history: user.history,
+    }
+  } else {
+    return {
+      isLoggedIn: false,
+      favorites: [],
+      history: [],
+    }
+  }
+})()
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    checkUserActive: (
-      state,
-      action: PayloadAction<{ user: string | null }>,
-    ) => {
-      state.isLoggedIn = !!action.payload.user
-    },
-    checkFavorite: (state, action: PayloadAction<{ user: allUserInfo }>) => {
-      state.favorites = action.payload.user.favorites
-    },
-    checkHistory: (state, action: PayloadAction<{ user: allUserInfo }>) => {
-      state.history = action.payload.user.history
-    },
-    loadUserData: (state, action: PayloadAction<{ user: allUserInfo }>) => {
+    login: (state, action: PayloadAction<allUserInfo>) => {
       state.isLoggedIn = true
-      state.favorites = action.payload.user.favorites
-      state.history = action.payload.user.history
+      state.favorites = action.payload.favorites
+      state.history = action.payload.history
+    },
+    logout: state => {
+      state.isLoggedIn = false
+      state.favorites = []
+      state.history = []
+    },
+    addFavorites: (state, action: PayloadAction<{ id: string }>) => {
+      state.favorites.push(action.payload.id)
+    },
+    removeFavorites: (state, action: PayloadAction<{ id: string }>) => {
+      state.favorites = state.favorites.filter(id => id !== action.payload.id)
+    },
+    addHistories: (state, action: PayloadAction<{ text: string }>) => {
+      state.history.push(action.payload.text)
+    },
+    removeHistories: (state, action: PayloadAction<{ text: string }>) => {
+      state.history = state.history.filter(text => text !== action.payload.text)
     },
   },
 })
 
-export const { checkUserActive, checkFavorite, loadUserData, checkHistory } =
-  userSlice.actions
+export const {
+  login,
+  logout,
+  addFavorites,
+  removeFavorites,
+  addHistories,
+  removeHistories,
+} = userSlice.actions
 export default userSlice.reducer
 
 export const getUserFavorites = (state: RootState) => state.userSlice.favorites
