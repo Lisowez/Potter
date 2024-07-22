@@ -14,11 +14,6 @@ import {
   getUserIsLoggedIn,
   logout,
 } from "../../App/store/userSlice"
-import {
-  addHistory,
-  getUserActive,
-  removeUser,
-} from "../../utils/workUser/forWorkWithUser"
 import useDebounce from "./useDebounce"
 
 export const Header = () => {

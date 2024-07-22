@@ -1,9 +1,4 @@
-import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { useContext, useEffect, useState } from "react"
-import { CharacterContext } from "../../utils/context/CharacterContext"
 import { HeroCard } from "../../components/HeroCard/HeroCard"
-import { getUserFavorites } from "../../App/store/userSlice"
 import { useFavoriteCards } from "./useFavoriteCard"
 
 export const Favorite = () => {

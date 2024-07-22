@@ -1,17 +1,14 @@
 import "./App.css"
 import { RouterProvider } from "react-router-dom"
 import { router } from "./utils/router"
-import { useEffect, useState, useMemo } from "react"
+import { useMemo } from "react"
 import { CharacterContext } from "./utils/context/CharacterContext"
 import { Suspense } from "react"
 import { Loading } from "./pages/Loading/Loading"
 import { withErrorBoundary } from "react-error-boundary"
 import ErrorPage from "./pages/Error/Error"
 import { useGetCharactersQuery } from "./App/store/api/api"
-import {
-  NewInterfaceForData,
-  transformData,
-} from "./App/store/api/transformAPI"
+import { NewInterfaceForData } from "./App/store/api/transformAPI"
 
 const App = () => {
   const { data, isLoading, error } = useGetCharactersQuery()

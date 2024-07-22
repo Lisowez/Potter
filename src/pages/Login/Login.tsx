@@ -9,8 +9,6 @@ import {
 import {
   allUserInfo,
   getAllUser,
-  getUserActive,
-  setUserActive,
 } from "../../utils/workUser/forWorkWithUser"
 
 export const Login = () => {

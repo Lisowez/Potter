@@ -8,7 +8,6 @@ import {
   getAllUser,
   getUserActive,
   setAllUsers,
-  setUserActive,
 } from "../../utils/workUser/forWorkWithUser"
 
 export const Registration = () => {

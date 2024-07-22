@@ -3,11 +3,6 @@ import PropTypes from "prop-types"
 import style from "./HeroCard.module.css"
 import { useNavigate } from "react-router-dom"
 import {
-  addFavorite,
-  getUserActive,
-  removeFavorite,
-} from "../../utils/workUser/forWorkWithUser"
-import {
   addFavorites,
   getUserFavorites,
   getUserIsLoggedIn,

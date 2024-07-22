@@ -2,11 +2,6 @@ import { useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
 import style from "./Item.module.css"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  removeFavorite,
-  addFavorite,
-  getUserActive,
-} from "../../utils/workUser/forWorkWithUser"
 import { useGetCharacterByIDQuery } from "../../App/store/api/api"
 import {
   addFavorites,
